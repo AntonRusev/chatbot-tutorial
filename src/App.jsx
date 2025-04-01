@@ -8,9 +8,11 @@ import { Assistant } from "./assistants/openai";
 import { Chat } from "./components/Chat/Chat";
 import { Controls } from "./components/Controls/Controls";
 import styles from "./App.module.css";
+import { Loader } from "./components/Loader/Loader";
 
 function App() {
   const [messages, setMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Generating an instance of the Assistant class
   const assistant = new Assistant();
@@ -24,6 +26,8 @@ function App() {
     // "content" is the user message from the input form
     addMessage({ content, role: "user" }); // Adding user's input text message to the conversation
 
+    setIsLoading(true); // Trigger the Loader
+
     try {
       const result = await assistant.chat(content, messages);
 
@@ -31,11 +35,16 @@ function App() {
       addMessage({ content: result.output_text, role: "assistant" }); // Adding the text response to the conversation (OPEN AI)
     } catch (error) {
       addMessage({ content: "Sorry, we encountered an error while processing your request. Please try again later.", role: "system" }); // TODO add a new "system" role alongside "user" and "assistant"
+    } finally {
+      setIsLoading(false); // Clear the Loader
     };
   };
 
   return (
     <div className={styles.App}>
+      {/* Loader */}
+      {isLoading && <Loader />}
+
       <header className={styles.Header}>
         {/* Image */}
         <img
