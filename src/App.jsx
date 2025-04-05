@@ -62,7 +62,10 @@ function App() {
       </div>
 
       {/* Controls - TextArea + Submit Button */}
-      <Controls onSend={handleContentSend} />
+      <Controls
+        isDisabled={isLoading}
+        onSend={handleContentSend}
+      />
     </div>
   );
 }

@@ -1,9 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import TextareaAutosize from 'react-textarea-autosize';
 
 import styles from './Controls.module.css'
 
-export function Controls({ onSend }) {
+export function Controls({ isDisabled = false, onSend }) {
     const [content, setContent] = useState("");
+
+    const textareaRef = useRef(null);
+
+    useEffect(() => {
+        if (!isDisabled) {
+            textareaRef.current.focus(); // Focus on the textarea when it is enabled (Autofocus after chatbot responses)
+        };
+    }, [isDisabled])
 
     function handleContentChange(e) {
         setContent(e.target.value);
@@ -28,10 +37,14 @@ export function Controls({ onSend }) {
         <div className={styles.Controls}>
             <div className={styles.TextAreaContainer}>
                 {/* Text Area */}
-                <textarea
+                <TextareaAutosize
                     className={styles.TextArea}
+                    ref={textareaRef}
+                    disabled={isDisabled}
                     placeholder="Write Message Here"
                     value={content}
+                    minRows={1}
+                    maxRows={5}
                     onChange={handleContentChange}
                     onKeyDown={handleEnterPress}
                 />
@@ -40,6 +53,7 @@ export function Controls({ onSend }) {
             {/* Send Button */}
             <button
                 className={styles.Button}
+                disabled={isDisabled}
                 onClick={handleContentSend}
             >
                 <SendIcon />
