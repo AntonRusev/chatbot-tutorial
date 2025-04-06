@@ -24,7 +24,12 @@ export function Chat({ messages }) {
     ), [messages]);
 
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        const lastMessage = messages[messages.length - 1]; // Getting the last message
+
+        if (lastMessage?.role === 'user') {
+            // Scroll only if the last message is from the user
+            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        };
     }, [messages]);
 
     return (
