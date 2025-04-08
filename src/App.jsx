@@ -1,8 +1,9 @@
 import { useState } from "react";
 
 // Have only one Assistant active at a time:
-// import { Assistant } from "./assistants/googleai";
 import { Assistant } from "./assistants/openai";
+// import { Assistant } from "./assistants/googleai";
+// import { Assistant } from "./assistants/deepseekai";
 
 import { Chat } from "./components/Chat/Chat";
 import { Controls } from "./components/Controls/Controls";
